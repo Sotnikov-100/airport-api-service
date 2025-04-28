@@ -8,6 +8,9 @@ class Country(BaseModel):
     name = models.CharField(max_length=100, unique=True)
     code = models.CharField(max_length=2, unique=True)
 
+    class Meta:
+        app_label = "flights"
+
     def __str__(self):
         return self.name
 
@@ -16,13 +19,8 @@ class City(BaseModel):
     name = models.CharField(max_length=100)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f"{self.name}, {self.country.code}"
-
-
-class City(BaseModel):
-    name = models.CharField(max_length=100)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    class Meta:
+        app_label = "flights"
 
     def __str__(self):
         return f"{self.name}, {self.country.code}"
@@ -32,6 +30,9 @@ class Airport(BaseModel):
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=3, unique=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
+
+    class Meta:
+        app_label = "flights"
 
     def __str__(self):
         return f"{self.code} ({self.name})"
@@ -64,6 +65,7 @@ class Flight(BaseModel):
     available_seats = models.PositiveIntegerField(default=0)
 
     class Meta:
+        app_label = "flights"
         ordering = ["departure_time"]
         indexes = [
             models.Index(fields=["flight_number"]),
