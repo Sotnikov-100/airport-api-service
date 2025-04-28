@@ -14,12 +14,15 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
   db:
     image: postgres:15
     restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5433:5432"
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
