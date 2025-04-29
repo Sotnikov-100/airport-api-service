@@ -4,7 +4,7 @@ from apps.core.models import BaseModel
 
 class Airline(BaseModel):
     name = models.CharField(max_length=100)
-    code = models.CharField(max_length=2, unique=True)
+    code = models.CharField(max_length=3, unique=True)
 
     class Meta:
         app_label = "airlines"

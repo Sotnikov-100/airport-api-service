@@ -38,6 +38,7 @@ urlpatterns = [
     path("api/airlines/", include("apps.airlines.urls")),
     path("api/bookings/", include("apps.bookings.urls")),
     path("api/flights/", include("apps.flights.urls")),
+    path("api/auth/", include("apps.users.urls")),
     path(
         "swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),
