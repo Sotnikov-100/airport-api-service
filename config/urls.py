@@ -34,11 +34,10 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("apps.core.urls")),
-    path("users/", include("apps.users.urls")),
-    path("airlines/", include("apps.airlines.urls")),
-    path("bookings/", include("apps.bookings.urls")),
-    path("flights/", include("apps.flights.urls")),
+    path("api/users/", include("apps.users.urls")),
+    path("api/airlines/", include("apps.airlines.urls")),
+    path("api/bookings/", include("apps.bookings.urls")),
+    path("api/flights/", include("apps.flights.urls")),
     path(
         "swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),
