@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from apps.bookings.models import Passenger, Booking
+from apps.flights.models import Flight
+from apps.flights.serializers import FlightSerializer
 
 
 class PassengerSerializer(serializers.ModelSerializer):
@@ -9,10 +11,25 @@ class PassengerSerializer(serializers.ModelSerializer):
 
 
 class BookingSerializer(serializers.ModelSerializer):
-    flight = serializers.StringRelatedField()
-    passenger = serializers.StringRelatedField()
+    flight = FlightSerializer(read_only=True)
+    passenger = PassengerSerializer(read_only=True)
+    flight_id = serializers.PrimaryKeyRelatedField(
+        queryset=Flight.objects.all(), write_only=True, source="flight"
+    )
+    passenger_id = serializers.PrimaryKeyRelatedField(
+        queryset=Passenger.objects.all(), write_only=True, source="passenger"
+    )
 
     class Meta:
         model = Booking
-        fields = ("flight", "passenger", "seat_number", "status", "booked_by")
+        fields = (
+            "id",
+            "flight",
+            "passenger",
+            "seat_number",
+            "status",
+            "booked_by",
+            "flight_id",
+            "passenger_id",
+        )
         read_only_fields = ["booked_by", "status"]

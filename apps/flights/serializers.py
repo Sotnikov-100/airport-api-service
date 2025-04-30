@@ -27,9 +27,10 @@ class AirportSerializer(serializers.ModelSerializer):
 
 
 class FlightSerializer(serializers.ModelSerializer):
-    departure_airport = serializers.StringRelatedField()
-    arrival_airport = serializers.StringRelatedField()
-    aircraft = serializers.StringRelatedField()
+    departure_airport = AirportSerializer()
+    arrival_airport = AirportSerializer()
+    aircraft = AircraftSerializer()
+    duration_minutes = serializers.SerializerMethodField()
 
     class Meta:
         model = Flight
@@ -42,7 +43,11 @@ class FlightSerializer(serializers.ModelSerializer):
             "aircraft",
             "status",
             "available_seats",
+            "duration_minutes",
         )
+
+    def get_duration_minutes(self, obj):
+        return obj.duration()
 
 
 class FlightDetailSerializer(serializers.ModelSerializer):
