@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('airlines', '0002_alter_airline_code'),
+        ("airlines", "0002_alter_airline_code"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='aircraft',
-            name='photo',
-            field=models.ImageField(null=True, upload_to='aircrafts/photos/'),
+            model_name="aircraft",
+            name="photo",
+            field=models.ImageField(null=True, upload_to="aircrafts/photos/"),
         ),
         migrations.AddField(
-            model_name='airline',
-            name='logo',
-            field=models.ImageField(blank=True, null=True, upload_to='airlines/logos/'),
+            model_name="airline",
+            name="logo",
+            field=models.ImageField(blank=True, null=True, upload_to="airlines/logos/"),
         ),
     ]

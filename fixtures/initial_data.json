@@ -1,0 +1,96 @@
+[
+  {
+    "model": "flight.country",
+    "pk": 1,
+    "fields": {
+      "name": "Ukraine",
+      "code": "UA"
+    }
+  },
+  {
+    "model": "flight.city",
+    "pk": 1,
+    "fields": {
+      "name": "Kyiv",
+      "country": 1
+    }
+  },
+  {
+    "model": "flight.airport",
+    "pk": 1,
+    "fields": {
+      "name": "Boryspil International Airport",
+      "code": "KBP",
+      "city": 1
+    }
+  },
+  {
+    "model": "flight.airline",
+    "pk": 1,
+    "fields": {
+      "name": "Ukraine International Airlines",
+      "code": "PS",
+      "logo": null
+    }
+  },
+  {
+    "model": "flight.aircraft",
+    "pk": 1,
+    "fields": {
+      "model": "Boeing 737",
+      "airline": 1,
+      "photo": null
+    }
+  },
+  {
+    "model": "flight.flight",
+    "pk": 1,
+    "fields": {
+      "flight_number": "PS101",
+      "departure_airport": 1,
+      "arrival_airport": 1,
+      "departure_time": "2025-05-10T08:00:00Z",
+      "arrival_time": "2025-05-10T10:00:00Z",
+      "aircraft": 1,
+      "status": "scheduled",
+      "available_seats": 150
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "email": "admin@example.com",
+      "password": "pbkdf2_sha256$390000$demo$hashedpassword123==",
+      "first_name": "Admin",
+      "last_name": "User",
+      "is_active": true,
+      "is_staff": true,
+      "is_superuser": true,
+      "last_login": null,
+      "date_joined": "2025-04-30T00:00:00Z"
+    }
+  },
+  {
+    "model": "flight.passenger",
+    "pk": 1,
+    "fields": {
+      "first_name": "Ivan",
+      "last_name": "Petriv",
+      "email": "ivan@example.com",
+      "phone": "+380931112233",
+      "passport_scan": null
+    }
+  },
+  {
+    "model": "flight.booking",
+    "pk": 1,
+    "fields": {
+      "flight": 1,
+      "passenger": 1,
+      "seat_number": "12A",
+      "status": "confirmed",
+      "booked_by": 1
+    }
+  }
+]

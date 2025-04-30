@@ -9,12 +9,14 @@ services:
       - media_volume:/app/media
     env_file:
       - .env
+    environment:
+      - DEBUG=${DEBUG}
     ports:
       - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
-    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
 
   db:
     image: postgres:15
@@ -23,6 +25,8 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     ports:
       - "5433:5432"
+    env_file:
+      - .env
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
