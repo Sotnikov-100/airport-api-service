@@ -16,3 +16,6 @@ venv/
 
 # Docker
 data/
+
+#BD
+backup.sql

@@ -2,7 +2,6 @@ from django.db import models
 from apps.core.models import BaseModel
 from apps.flights.models import Flight
 from apps.users.models import User
-from config import settings
 
 
 class Passenger(BaseModel):
@@ -10,6 +9,7 @@ class Passenger(BaseModel):
     last_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20, blank=True)
+    passport_scan = models.FileField(upload_to="passengers/documents/", null=True)
 
     class Meta:
         app_label = "bookings"

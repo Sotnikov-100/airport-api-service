@@ -5,6 +5,7 @@ from apps.core.models import BaseModel
 class Airline(BaseModel):
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=3, unique=True)
+    logo = models.ImageField(upload_to="airlines/logos/", null=True, blank=True)
 
     class Meta:
         app_label = "airlines"
@@ -16,6 +17,7 @@ class Airline(BaseModel):
 class Aircraft(BaseModel):
     model = models.CharField(max_length=50)
     airline = models.ForeignKey(Airline, on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to="aircrafts/photos/", null=True)
 
     class Meta:
         app_label = "airlines"
