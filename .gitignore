@@ -19,3 +19,7 @@ data/
 
 #BD
 backup.sql
+
+# Redis
+dump.rdb
+*.rdb

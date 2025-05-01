@@ -2,6 +2,9 @@ from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_cookie
 from django.db.models import Q
 from datetime import datetime
 from apps.core.permissions import IsAdminOrReadOnly
@@ -15,24 +18,34 @@ from apps.flights.serializers import (
 )
 
 
+@method_decorator(cache_page(60 * 60), name="list")
+@method_decorator(cache_page(60 * 60 * 2), name="retrieve")
 class CountryViewSet(viewsets.ModelViewSet):
     queryset = Country.objects.all()
     serializer_class = CountrySerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
+@method_decorator(cache_page(60 * 60), name="list")
+@method_decorator(cache_page(60 * 60 * 2), name="retrieve")
 class CityViewSet(viewsets.ModelViewSet):
     queryset = City.objects.select_related("country")
     serializer_class = CitySerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
+@method_decorator(cache_page(60 * 15), name="list")
+@method_decorator(cache_page(60 * 30), name="retrieve")
 class AirportViewSet(viewsets.ModelViewSet):
     queryset = Airport.objects.select_related("city")
     serializer_class = AirportSerializer
     permission_classes = [IsAdminOrReadOnly]
 
 
+@method_decorator(cache_page(60 * 5), name="list")
+@method_decorator(vary_on_cookie, name="list")
+@method_decorator(cache_page(60 * 10), name="retrieve")
+@method_decorator(vary_on_cookie, name="retrieve")
 class FlightViewSet(viewsets.ModelViewSet):
     queryset = Flight.objects.select_related(
         "departure_airport", "arrival_airport", "aircraft", "aircraft__airline"
@@ -61,6 +74,7 @@ class FlightViewSet(viewsets.ModelViewSet):
     ordering_fields = ["departure_time", "arrival_time", "available_seats"]
     ordering = ["departure_time"]
 
+    @method_decorator(cache_page(60 * 5))
     @action(detail=True, methods=["get"])
     def available_seats(self, request, pk=None):
         flight = self.get_object()

@@ -24,6 +24,7 @@ psycopg2-binary==2.9.6
 PyJWT==2.10.1
 pytz==2025.2
 PyYAML==6.0.2
+redis==6.0.0
 requests==2.32.3
 ruamel.yaml==0.16.13
 ruamel.yaml.clib==0.2.12
@@ -31,4 +32,3 @@ setuptools==80.0.0
 sqlparse==0.5.3
 uritemplate==4.1.1
 urllib3==2.4.0
-
