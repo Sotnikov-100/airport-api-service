@@ -130,9 +130,7 @@ class FlightViewSet(viewsets.ModelViewSet):
         now = timezone.now()
         tomorrow = now + timezone.timedelta(days=1)
         flights = self.get_queryset().filter(
-            departure_time__gte=now,
-            departure_time__lte=tomorrow,
-            status="scheduled"
+            departure_time__gte=now, departure_time__lte=tomorrow, status="scheduled"
         )
         page = self.paginate_queryset(flights)
         if page is not None:
@@ -148,7 +146,7 @@ class FlightViewSet(viewsets.ModelViewSet):
         if not new_status or new_status not in dict(Flight.FLIGHT_STATUS_CHOICES):
             return Response(
                 {"error": "Invalid or missing status"},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
         flight.status = new_status
         flight.save()
