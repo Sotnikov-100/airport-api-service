@@ -10,3 +10,5 @@ router.register(r"passengers", PassengerViewSet)
 router.register(r"bookings", BookingViewSet)
 
 urlpatterns = router.urls
+
+app_name = "bookings"

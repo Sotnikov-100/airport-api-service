@@ -4,6 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Q
 from datetime import datetime
+from apps.core.permissions import IsAdminOrReadOnly
 from apps.flights.models import Country, City, Airport, Flight
 from apps.flights.serializers import (
     CountrySerializer,
@@ -17,16 +18,19 @@ from apps.flights.serializers import (
 class CountryViewSet(viewsets.ModelViewSet):
     queryset = Country.objects.all()
     serializer_class = CountrySerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class CityViewSet(viewsets.ModelViewSet):
     queryset = City.objects.select_related("country")
     serializer_class = CitySerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class AirportViewSet(viewsets.ModelViewSet):
     queryset = Airport.objects.select_related("city")
     serializer_class = AirportSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class FlightViewSet(viewsets.ModelViewSet):
@@ -34,6 +38,7 @@ class FlightViewSet(viewsets.ModelViewSet):
         "departure_airport", "arrival_airport", "aircraft", "aircraft__airline"
     )
     serializer_class = FlightSerializer
+    permission_classes = [IsAdminOrReadOnly]
     filter_backends = [
         DjangoFilterBackend,
         filters.SearchFilter,
