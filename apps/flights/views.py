@@ -1,12 +1,15 @@
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, status
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
+from django.utils import timezone
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie
-from django.db.models import Q
+from django.db.models import Q, Count
 from datetime import datetime
+
+from apps.core.pagination import StandardResultsSetPagination
 from apps.core.permissions import IsAdminOrReadOnly
 from apps.flights.models import Country, City, Airport, Flight
 from apps.flights.serializers import (
@@ -52,6 +55,7 @@ class FlightViewSet(viewsets.ModelViewSet):
     )
     serializer_class = FlightSerializer
     permission_classes = [IsAdminOrReadOnly]
+    pagination_class = StandardResultsSetPagination
     filter_backends = [
         DjangoFilterBackend,
         filters.SearchFilter,
@@ -115,3 +119,38 @@ class FlightViewSet(viewsets.ModelViewSet):
         if self.action == "retrieve":
             return FlightDetailSerializer
         return super().get_serializer_class()
+
+    @action(detail=False, methods=["get"])
+    def statistics(self, request):
+        stats = Flight.objects.values("status").annotate(count=Count("status"))
+        return Response(stats)
+
+    @action(detail=False, methods=["get"])
+    def upcoming(self, request):
+        now = timezone.now()
+        tomorrow = now + timezone.timedelta(days=1)
+        flights = self.get_queryset().filter(
+            departure_time__gte=now,
+            departure_time__lte=tomorrow,
+            status="scheduled"
+        )
+        page = self.paginate_queryset(flights)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(flights, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=["post"])
+    def update_status(self, request, pk=None):
+        flight = self.get_object()
+        new_status = request.data.get("status")
+        if not new_status or new_status not in dict(Flight.FLIGHT_STATUS_CHOICES):
+            return Response(
+                {"error": "Invalid or missing status"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        flight.status = new_status
+        flight.save()
+        serializer = self.get_serializer(flight)
+        return Response(serializer.data)
