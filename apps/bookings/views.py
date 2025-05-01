@@ -33,13 +33,21 @@ class BookingViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     pagination_class = StandardResultsSetPagination
     filterset_fields = ["status", "flight"]
-    search_fields = ["passenger__first_name", "passenger__last_name", "flight__flight_number"]
+    search_fields = [
+        "passenger__first_name",
+        "passenger__last_name",
+        "flight__flight_number",
+    ]
 
     def get_queryset(self):
         user = self.request.user
         if user.is_staff:
-            return Booking.objects.all().select_related("flight", "passenger", "booked_by")
-        return Booking.objects.filter(booked_by=user).select_related("flight", "passenger")
+            return Booking.objects.all().select_related(
+                "flight", "passenger", "booked_by"
+            )
+        return Booking.objects.filter(booked_by=user).select_related(
+            "flight", "passenger"
+        )
 
     def perform_create(self, serializer):
         serializer.save(booked_by=self.request.user)
@@ -49,6 +57,10 @@ class BookingViewSet(viewsets.ModelViewSet):
         filters.SearchFilter,
         filters.OrderingFilter,
     ]
-    search_fields = ["passenger__first_name", "passenger__last_name", "flight__flight_number"]
+    search_fields = [
+        "passenger__first_name",
+        "passenger__last_name",
+        "flight__flight_number",
+    ]
     ordering_fields = ["status", "flight"]
     ordering = ["status"]
