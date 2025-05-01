@@ -10,3 +10,5 @@ router.register(r"airlines", AirlineViewSet)
 router.register(r"aircrafts", AircraftViewSet)
 
 urlpatterns = router.urls
+
+app_name = "airlines"

@@ -6,7 +6,6 @@ from apps.flights.views import (
     FlightViewSet,
 )
 
-
 router = DefaultRouter()
 router.register(r"countries", CountryViewSet)
 router.register(r"cities", CityViewSet)
@@ -14,3 +13,5 @@ router.register(r"airports", AirportViewSet)
 router.register(r"flights", FlightViewSet)
 
 urlpatterns = router.urls
+
+app_name = "flights"
