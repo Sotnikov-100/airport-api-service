@@ -11,19 +11,21 @@ class CountrySerializer(serializers.ModelSerializer):
 
 
 class CitySerializer(serializers.ModelSerializer):
-    country = serializers.StringRelatedField()
+    country = serializers.PrimaryKeyRelatedField(queryset=Country.objects.all())
 
     class Meta:
         model = City
         fields = ("name", "country")
+        extra_kwargs = {"country": {"required": True}}
 
 
 class AirportSerializer(serializers.ModelSerializer):
-    city = serializers.StringRelatedField()
+    city = serializers.PrimaryKeyRelatedField(queryset=City.objects.all())
 
     class Meta:
         model = Airport
         fields = ("name", "code", "city")
+        extra_kwargs = {"city": {"required": True}}
 
 
 class FlightSerializer(serializers.ModelSerializer):

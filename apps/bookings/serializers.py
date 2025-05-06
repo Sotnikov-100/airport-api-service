@@ -14,10 +14,13 @@ class BookingSerializer(serializers.ModelSerializer):
     flight = FlightSerializer(read_only=True)
     passenger = PassengerSerializer(read_only=True)
     flight_id = serializers.PrimaryKeyRelatedField(
-        queryset=Flight.objects.all(), write_only=True, source="flight"
+        queryset=Flight.objects.all(), write_only=True, source="flight", required=True
     )
     passenger_id = serializers.PrimaryKeyRelatedField(
-        queryset=Passenger.objects.all(), write_only=True, source="passenger"
+        queryset=Passenger.objects.all(),
+        write_only=True,
+        source="passenger",
+        required=True,
     )
 
     class Meta:
@@ -32,4 +35,4 @@ class BookingSerializer(serializers.ModelSerializer):
             "flight_id",
             "passenger_id",
         )
-        read_only_fields = ["booked_by", "status"]
+        read_only_fields = ["booked_by"]

@@ -9,8 +9,8 @@ class AirlineSerializer(serializers.ModelSerializer):
 
 
 class AircraftSerializer(serializers.ModelSerializer):
-    airline = serializers.StringRelatedField()
+    airline = serializers.PrimaryKeyRelatedField(queryset=Airline.objects.all())
 
     class Meta:
         model = Aircraft
-        fields = ("model", "airline")
+        fields = ("model", "airline", "photo")
