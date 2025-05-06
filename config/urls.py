@@ -19,7 +19,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from config.swagger import schema_view
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
+)
 
 
 urlpatterns = [
@@ -28,12 +32,15 @@ urlpatterns = [
     path("api/v1/", include("apps.airlines.urls", namespace="airlines")),
     path("api/v1/", include("apps.bookings.urls", namespace="bookings")),
     path("api/v1/", include("apps.flights.urls", namespace="flights")),
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "swagger/",
-        schema_view.with_ui("swagger", cache_timeout=0),
-        name="schema-swagger-ui",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
     ),
-    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
-    path("swagger.json", schema_view.without_ui(cache_timeout=0), name="schema-json"),
-    path("swagger.yaml", schema_view.without_ui(cache_timeout=0), name="schema-yaml"),
+    path(
+        "redoc/",
+        SpectacularRedocView.as_view(url_name="schema"),
+        name="redoc",
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
