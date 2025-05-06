@@ -1,0 +1,52 @@
+# Ignoring virtual environment and Python cache
+venv/
+.env/
+*.py[cod]
+__pycache__/
+*.so
+.Python
+
+# Ignoring IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Ignoring static files (if collected separately)
+staticfiles/
+*.css.map
+
+# Ignoring logs and temporary files
+*.log
+*.pot
+*.pid
+*.DS_Store
+
+# Ignoring media files (if using volumes)
+media/
+!media/.gitkeep
+
+# Ignoring test data and fixtures
+test_data/
+*.bak
+
+# Ignoring SQLite database files (if using)
+*.sqlite3
+*.db
+
+# Ignoring documentation
+docs/_build/
+
+# Ignoring database backup files
+backup.sql
+
+# Ignoring Redis dump files
+dump.rdb
+*.rdb
+
+# Exceptions (don't ignore)
+!.env.example
+!Dockerfile
+!docker-compose.yml
+!requirements.txt
+!manage.py
