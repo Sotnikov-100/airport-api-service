@@ -2,6 +2,7 @@ from rest_framework import viewsets, filters, status
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
 from django.utils import timezone
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -54,7 +55,7 @@ class FlightViewSet(viewsets.ModelViewSet):
         "departure_airport", "arrival_airport", "aircraft", "aircraft__airline"
     )
     serializer_class = FlightSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     pagination_class = StandardResultsSetPagination
     filter_backends = [
         DjangoFilterBackend,

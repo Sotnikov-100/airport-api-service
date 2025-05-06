@@ -3,6 +3,8 @@ from rest_framework import viewsets
 from rest_framework import filters
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from rest_framework.permissions import IsAuthenticated
+
 from apps.airlines.models import Airline, Aircraft
 from apps.airlines.serializers import AirlineSerializer, AircraftSerializer
 from apps.core.pagination import StandardResultsSetPagination
@@ -15,7 +17,7 @@ class AirlineViewSet(viewsets.ModelViewSet):
     queryset = Airline.objects.all()
     serializer_class = AirlineSerializer
     search_fields = ["name", "code"]
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     pagination_class = StandardResultsSetPagination
     filter_backends = [
         DjangoFilterBackend,
@@ -33,7 +35,7 @@ class AircraftViewSet(viewsets.ModelViewSet):
     queryset = Aircraft.objects.select_related("airline")
     serializer_class = AircraftSerializer
     filterset_fields = ["airline"]
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     pagination_class = StandardResultsSetPagination
     filter_backends = [
         DjangoFilterBackend,

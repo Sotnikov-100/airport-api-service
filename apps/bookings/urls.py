@@ -6,8 +6,8 @@ from apps.bookings.views import (
 
 
 router = DefaultRouter()
-router.register(r"passengers", PassengerViewSet)
-router.register(r"bookings", BookingViewSet)
+router.register(r"passengers", PassengerViewSet, basename="passenger")
+router.register(r"bookings", BookingViewSet, basename="booking")
 
 urlpatterns = router.urls
 

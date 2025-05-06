@@ -24,10 +24,10 @@ from config.swagger import schema_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/users/", include("apps.users.urls", namespace="users")),
-    path("api/airlines/", include("apps.airlines.urls", namespace="airlines")),
-    path("api/bookings/", include("apps.bookings.urls", namespace="bookings")),
-    path("api/flights/", include("apps.flights.urls", namespace="flights")),
+    path("api/v1/", include("apps.users.urls", namespace="users")),
+    path("api/v1/", include("apps.airlines.urls", namespace="airlines")),
+    path("api/v1/", include("apps.bookings.urls", namespace="bookings")),
+    path("api/v1/", include("apps.flights.urls", namespace="flights")),
     path(
         "swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),
