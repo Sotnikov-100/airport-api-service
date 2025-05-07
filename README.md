@@ -34,13 +34,13 @@
 ---
 
 ## ⚙️ Built-in API Capabilities  
-| Feature       | Example Usage                                  |
-|--------------|-----------------------------------------------|
-| Pagination   | `/api/flights/?page=1&page_size=20`           |
-| Search       | `/api/flights/?search=Lufthansa`              |
-| Filter       | `/api/flights/?status=scheduled&aircraft__airline=1` |
-| Ordering     | `/api/flights/?ordering=-departure_time`      |
-| Throttling   | 100 req/day (anonymous), 1000 req/day (auth)  |
+| Feature       | Example Usage                                           |
+|--------------|---------------------------------------------------------|
+| Pagination   | `/api/v1/flights/?page=1&page_size=20`                  |
+| Search       | `/api/v1/flights/?search=Lufthansa`                     |
+| Filter       | `/api/v1/flights/?status=scheduled&aircraft__airline=1` |
+| Ordering     | `/api/v1/flights/?ordering=-departure_time`             |
+| Throttling   | 100 req/day (anonymous), 1000 req/day (auth)            |
 
 ---
 
