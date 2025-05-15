@@ -43,3 +43,20 @@ class TestAirlineAPI:
         url = reverse("airlines:airlines-detail", args=[airline.id])
         response = admin_client.delete(url)
         assert response.status_code == status.HTTP_204_NO_CONTENT
+
+    def test_airline_create_invalid_data(self, admin_client):
+        """Test creating airline with invalid data fails."""
+        url = reverse("airlines:airlines-list")
+        data = {"name": "", "code": "TOOLONG"}
+        response = admin_client.post(url, data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "name" in response.data
+        assert "code" in response.data
+
+    def test_airline_update_invalid_data(self, admin_client, airline):
+        """Test updating airline with invalid data fails."""
+        url = reverse("airlines:airlines-detail", args=[airline.id])
+        data = {"code": ""}
+        response = admin_client.patch(url, data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "code" in response.data

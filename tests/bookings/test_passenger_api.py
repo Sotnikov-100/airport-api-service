@@ -50,3 +50,23 @@ class TestPassengerAPI:
         response = authenticated_client.delete(url)
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert Passenger.objects.count() == 0
+
+    def test_create_passenger_invalid_data(self, authenticated_client):
+        """Test creating passenger with invalid data fails."""
+        url = reverse("bookings:passenger-list")
+        data = {
+            "first_name": "",
+            "email": "not-an-email",
+        }
+        response = authenticated_client.post(url, data, format="json")
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "first_name" in response.data
+        assert "email" in response.data
+
+    def test_update_passenger_invalid_data(self, authenticated_client, passenger):
+        """Test updating passenger with invalid data fails."""
+        url = reverse("bookings:passenger-detail", kwargs={"pk": passenger.pk})
+        data = {"email": ""}
+        response = authenticated_client.patch(url, data, format="json")
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "email" in response.data

@@ -56,3 +56,20 @@ class TestCityAPI:
 
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert not City.objects.filter(pk=city.pk).exists()
+
+    def test_create_city_invalid_data(self, admin_client):
+        """Test creating city with invalid data fails."""
+        url = reverse("flights:city-list")
+        data = {"name": "", "country": 9999}
+        response = admin_client.post(url, data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "name" in response.data
+        assert "country" in response.data
+
+    def test_update_city_invalid_country(self, admin_client, city):
+        """Test updating city with invalid country fails."""
+        url = reverse("flights:city-detail", kwargs={"pk": city.pk})
+        data = {"country": 9999}
+        response = admin_client.patch(url, data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "country" in response.data

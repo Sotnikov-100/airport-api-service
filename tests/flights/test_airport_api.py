@@ -58,3 +58,21 @@ class TestAirportAPI:
 
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert not Airport.objects.filter(pk=airport.pk).exists()
+
+    def test_create_airport_invalid_data(self, admin_client):
+        """Test creating airport with invalid data fails."""
+        url = reverse("flights:airport-list")
+        data = {"name": "", "code": "INVALIDCODE", "city": 9999}
+        response = admin_client.post(url, data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "name" in response.data
+        assert "code" in response.data
+        assert "city" in response.data
+
+    def test_update_airport_invalid_data(self, admin_client, airport):
+        """Test updating airport with invalid data fails."""
+        url = reverse("flights:airport-detail", kwargs={"pk": airport.pk})
+        data = {"code": "TOOLONGCODE"}
+        response = admin_client.patch(url, data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "code" in response.data

@@ -85,3 +85,20 @@ class TestBookingAPI:
         response = authenticated_client.delete(url)
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert Booking.objects.count() == 0
+
+    def test_create_booking_invalid_flight(self, authenticated_client, passenger):
+        """Test creating booking with invalid flight fails."""
+        url = reverse("bookings:booking-list")
+        data = {
+            "flight_id": 9999,
+            "passenger_id": passenger.id,
+            "seat_number": "15B",
+        }
+        response = authenticated_client.post(url, data, format="json")
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+    def test_delete_nonexistent_booking(self, authenticated_client):
+        """Test deleting non-existent booking fails."""
+        url = reverse("bookings:booking-detail", kwargs={"pk": 9999})
+        response = authenticated_client.delete(url)
+        assert response.status_code == status.HTTP_404_NOT_FOUND

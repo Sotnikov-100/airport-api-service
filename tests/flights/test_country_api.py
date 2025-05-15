@@ -53,3 +53,20 @@ class TestCountryAPI:
 
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert not Country.objects.filter(pk=country.pk).exists()
+
+    def test_create_country_invalid_data(self, admin_client):
+        """Test creating country with invalid data fails."""
+        url = reverse("flights:country-list")
+        data = {"name": "", "code": "TOOLONG"}
+        response = admin_client.post(url, data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "name" in response.data
+        assert "code" in response.data
+
+    def test_update_country_invalid_code(self, admin_client, country):
+        """Test updating country with invalid code fails."""
+        url = reverse("flights:country-detail", kwargs={"pk": country.pk})
+        data = {"code": ""}
+        response = admin_client.patch(url, data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "code" in response.data

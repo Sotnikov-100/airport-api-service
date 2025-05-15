@@ -91,3 +91,15 @@ class TestFlightAPI:
         response = authenticated_client.get(url)
         assert response.status_code == status.HTTP_200_OK
         assert response.data["available_seats"] == flight.available_seats
+
+    def test_flight_search_invalid_airport(self, authenticated_client):
+        url = reverse("flights:flight-search")
+        response = authenticated_client.get(url, {"from": "INVALID", "to": "ALSOINVALID"})
+        assert response.status_code == status.HTTP_200_OK
+        assert len(response.data) == 0
+
+    def test_flight_update_status_invalid(self, admin_client, flight):
+        url = reverse("flights:flight-update-status", args=[flight.id])
+        response = admin_client.post(url, {"status": "invalid_status"})
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "error" in response.data or "status" in response.data

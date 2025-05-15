@@ -39,3 +39,19 @@ class TestAircraftAPI:
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data["results"]) == 1
         assert aircraft.model in response.data["results"][0]["model"]
+
+    def test_aircraft_create_invalid_data(self, admin_client):
+        """Test creating aircraft with invalid data fails."""
+        url = reverse("airlines:aircrafts-list")
+        data = {"model": "", "airline": 9999}
+        response = admin_client.post(url, data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "model" in response.data
+        assert "airline" in response.data
+
+    def test_aircraft_filter_invalid_airline(self, authenticated_client):
+        """Test filtering aircraft by invalid airline fails."""
+        url = reverse("airlines:aircrafts-list")
+        response = authenticated_client.get(url, {"airline": "invalid"})
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "airline" in response.data
