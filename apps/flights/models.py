@@ -39,13 +39,12 @@ class Airport(BaseModel):
 
 
 class Flight(BaseModel):
-    FLIGHT_STATUS_CHOICES = [
-        ("scheduled", "Scheduled"),
-        ("delayed", "Delayed"),
-        ("departed", "Departed"),
-        ("arrived", "Arrived"),
-        ("canceled", "Canceled"),
-    ]
+    class StatusChoices(models.TextChoices):
+        SCHEDULED = "scheduled", "Scheduled"
+        DELAYED = "delayed", "Delayed"
+        DEPARTED = "departed", "Departed"
+        ARRIVED = "arrived", "Arrived"
+        CANCELED = "canceled", "Canceled"
 
     flight_number = models.CharField(max_length=10, unique=True)
     departure_airport = models.ForeignKey(
@@ -60,7 +59,9 @@ class Flight(BaseModel):
         Aircraft, on_delete=models.PROTECT, related_name="flights"
     )
     status = models.CharField(
-        max_length=20, choices=FLIGHT_STATUS_CHOICES, default="scheduled"
+        max_length=20,
+        choices=StatusChoices.choices,
+        default=StatusChoices.SCHEDULED
     )
     available_seats = models.PositiveIntegerField(default=0)
 

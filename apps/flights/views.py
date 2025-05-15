@@ -372,7 +372,7 @@ class FlightViewSet(viewsets.ModelViewSet):
     def update_status(self, request, pk=None):
         flight = self.get_object()
         new_status = request.data.get("status")
-        if not new_status or new_status not in dict(Flight.FLIGHT_STATUS_CHOICES):
+        if not new_status or new_status not in dict(Flight.StatusChoices.choices):
             return Response(
                 {"error": "Invalid or missing status"},
                 status=status.HTTP_400_BAD_REQUEST,

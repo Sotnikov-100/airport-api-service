@@ -19,11 +19,10 @@ class Passenger(BaseModel):
 
 
 class Booking(BaseModel):
-    STATUS_CHOICES = [
-        ("confirmed", "Confirmed"),
-        ("canceled", "Canceled"),
-        ("completed", "Completed"),
-    ]
+    class StatusChoices(models.TextChoices):
+        CONFIRMED = "confirmed", "Confirmed"
+        CANCELED = "canceled", "Canceled"
+        COMPLETED = "completed", "Completed"
 
     class Meta:
         app_label = "bookings"
@@ -32,7 +31,9 @@ class Booking(BaseModel):
     passenger = models.ForeignKey(Passenger, on_delete=models.PROTECT)
     seat_number = models.CharField(max_length=10)
     status = models.CharField(
-        max_length=20, choices=STATUS_CHOICES, default="confirmed"
+        max_length=20,
+        choices=StatusChoices.choices,
+        default=StatusChoices.CONFIRMED
     )
     booked_by = models.ForeignKey(User, on_delete=models.PROTECT)
 
