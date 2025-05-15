@@ -27,15 +27,27 @@ class Booking(BaseModel):
     class Meta:
         app_label = "bookings"
 
-    flight = models.ForeignKey(Flight, on_delete=models.PROTECT)
-    passenger = models.ForeignKey(Passenger, on_delete=models.PROTECT)
+    flight = models.ForeignKey(
+        Flight,
+        on_delete=models.PROTECT,
+        related_name="bookings"
+    )
+    passenger = models.ForeignKey(
+        Passenger,
+        on_delete=models.PROTECT,
+        related_name="bookings"
+    )
     seat_number = models.CharField(max_length=10)
     status = models.CharField(
         max_length=20,
         choices=StatusChoices.choices,
         default=StatusChoices.CONFIRMED
     )
-    booked_by = models.ForeignKey(User, on_delete=models.PROTECT)
+    booked_by = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        related_name="bookings"
+    )
 
     def __str__(self):
         return f"Booking #{self.id} - {self.passenger} ({self.flight})"

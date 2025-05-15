@@ -17,7 +17,11 @@ class Country(BaseModel):
 
 class City(BaseModel):
     name = models.CharField(max_length=100)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.CASCADE,
+        related_name="cities"
+    )
 
     class Meta:
         app_label = "flights"
@@ -29,7 +33,11 @@ class City(BaseModel):
 class Airport(BaseModel):
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=3, unique=True)
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    city = models.ForeignKey(
+        City,
+        on_delete=models.CASCADE,
+        related_name="airports"
+    )
 
     class Meta:
         app_label = "flights"
@@ -48,15 +56,21 @@ class Flight(BaseModel):
 
     flight_number = models.CharField(max_length=10, unique=True)
     departure_airport = models.ForeignKey(
-        "Airport", on_delete=models.PROTECT, related_name="departing_flights"
+        "Airport",
+        on_delete=models.PROTECT,
+        related_name="departing_flights"
     )
     arrival_airport = models.ForeignKey(
-        "Airport", on_delete=models.PROTECT, related_name="arriving_flights"
+        "Airport",
+        on_delete=models.PROTECT,
+        related_name="arriving_flights"
     )
     departure_time = models.DateTimeField()
     arrival_time = models.DateTimeField()
     aircraft = models.ForeignKey(
-        Aircraft, on_delete=models.PROTECT, related_name="flights"
+        Aircraft,
+        on_delete=models.PROTECT,
+        related_name="flights"
     )
     status = models.CharField(
         max_length=20,

@@ -16,7 +16,11 @@ class Airline(BaseModel):
 
 class Aircraft(BaseModel):
     model = models.CharField(max_length=50)
-    airline = models.ForeignKey(Airline, on_delete=models.CASCADE)
+    airline = models.ForeignKey(
+        Airline,
+        on_delete=models.CASCADE,
+        related_name="aircrafts"
+    )
     photo = models.ImageField(upload_to="aircrafts/photos/", null=True)
 
     class Meta:
